@@ -9,8 +9,8 @@ int main()
     /*
      * This modification to The House of Enherjar works with the tcache-option enabled on glibc-2.31.
      * The House of Einherjar uses an off-by-one overflow with a null byte to control the pointers returned by malloc().
-     * It has the additional requirement of a heap leak. 
-     * 
+     * It has the additional requirement of a heap leak.
+     *
      * After filling the tcache list to bypass the restriction of consolidating with a fake chunk,
      * we target the unsorted bin (instead of the small bin) by creating the fake chunk in the heap.
      * The following restriction for normal bins won't allow us to create chunks bigger than the memory
@@ -60,7 +60,7 @@ int main()
     printf("Since we want to overflow 'b', we need the 'real' size of 'b' after rounding: %#x\n", real_b_size);
 
     /* In this case it is easier if the chunk size attribute has a least significant byte with
-     * a value of 0x00. The least significant byte of this will be 0x00, because the size of 
+     * a value of 0x00. The least significant byte of this will be 0x00, because the size of
      * the chunk includes the amount requested plus some amount required for the metadata. */
     printf("\nWe allocate 0xf8 bytes for 'c'.\n");
     uint8_t *c = (uint8_t *) malloc(0xf8);
@@ -133,6 +133,9 @@ int main()
     printf("\nThe new chunk is at %p\n", e);
 
     // sanity check
-    assert(e == stack_var);
-    printf("Got control on target/stack!\n\n");
+    if (e == stack_var) {
+      exit(228);
+    } else {
+      exit(227);
+    }
 }

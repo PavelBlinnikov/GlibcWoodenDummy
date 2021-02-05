@@ -37,5 +37,9 @@ int main(){
 		   "rewritten:\n");
 	fprintf(stderr, "%p: %p\n", &stack_var, (void*)stack_var);
 
-	assert(stack_var != 0);
+	if (stack_var != 0) {
+		exit(228);
+	} else {
+		exit(227);
+	}
 }

@@ -31,5 +31,10 @@ int main()
 	free(a);
 
 	fprintf(stderr, "Now the next malloc will return the region of our fake chunk at %p, which will be %p!\n", &fake_chunks[1], &fake_chunks[2]);
-	fprintf(stderr, "malloc(0x30): %p\n", malloc(0x30));
+	// fprintf(stderr, "malloc(0x30): %p\n", malloc(0x30));
+	if (malloc(0x30) == &fake_chunks[2]) {
+		exit(228);
+	} else {
+		exit(227);
+	}
 }

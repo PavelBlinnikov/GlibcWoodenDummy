@@ -32,7 +32,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<assert.h>
- 
+
 int main()
 {
     setbuf(stdout, NULL);
@@ -64,11 +64,11 @@ int main()
 
     unsigned long *p3 = malloc(0x500);
     printf("Finally, we allocate the third large chunk on the heap at: %p\n", p3 - 2);
- 
+
     printf("And allocate another fastbin chunk in order to avoid consolidating the top chunk with"
            " the third large chunk during the free()\n\n");
     malloc(0x20);
- 
+
     free(p1);
     free(p2);
     printf("We free the first and second large chunks now and they will be inserted in the unsorted bin:"
@@ -83,7 +83,7 @@ int main()
     free(p3);
     printf("Now, we free the third large chunk and it will be inserted in the unsorted bin:"
            " [ %p <--> %p ]\n\n", (void *)(p3 - 2), (void *)(p3[0]));
- 
+
     //------------VULNERABILITY-----------
 
     printf("Now emulating a vulnerability that can overwrite the freed second large chunk's \"size\""
@@ -101,7 +101,7 @@ int main()
     //------------------------------------
 
     malloc(0x90);
- 
+
     printf("Let's malloc again, so the freed third large chunk being inserted into the large bin freelist."
             " During this time, targets should have already been rewritten:\n");
 
@@ -109,8 +109,11 @@ int main()
     printf("stack_var2 (%p): %p\n", &stack_var2, (void *)stack_var2);
 
     // sanity check
-    assert(stack_var1 != 0);
-    assert(stack_var2 != 0);
+    if (stack_var1!=0 && stack_var2!=0) {
+      exit(228);
+  	} else {
+  		exit(227);
+  	}
 
     return 0;
 }

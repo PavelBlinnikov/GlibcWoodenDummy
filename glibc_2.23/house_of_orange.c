@@ -15,14 +15,14 @@
    This function is just present to emulate the scenario where
    the address of the function system is known.
 */
-int winner ( char *ptr);
+void winner ( char *ptr);
 
 int main()
 {
     /*
       The House of Orange starts with the assumption that a buffer overflow exists on the heap
       using which the Top (also called the Wilderness) chunk can be corrupted.
-      
+
       At the beginning of execution, the entire heap is part of the Top chunk.
       The first allocations are usually pieces of the Top chunk that are broken off to service the request.
       Thus, with every allocation, the Top chunks keeps getting smaller.
@@ -39,7 +39,7 @@ int main()
 
     fprintf(stderr, "The attack vector of this technique was removed by changing the behavior of malloc_printerr, "
         "which is no longer calling _IO_flush_all_lockp, in 91e7cf982d0104f0e71770f5ae8e3faf352dea9f (2.26).\n");
-  
+
     fprintf(stderr, "Since glibc 2.24 _IO_FILE vtable are checked against a whitelist breaking this exploit,"
         "https://sourceware.org/git/?p=glibc.git;a=commit;h=db3476aff19b75c4fdefbe65fcd5f0a90588ba51\n");
 
@@ -75,7 +75,7 @@ int main()
     top = (size_t *) ( (char *) p1 + 0x400 - 16);
     top[1] = 0xc01;
 
-    /* 
+    /*
        Now we request a chunk of size larger than the size of the Top chunk.
        Malloc tries to service this request by extending the Top chunk
        This forces sysmalloc to be invoked.
@@ -171,7 +171,7 @@ int main()
       Here, we require that chunk->bk->fd to be the value of _IO_list_all.
       So, we should set chunk->bk to be _IO_list_all - 16
     */
- 
+
     top[3] = io_list_all - 0x10;
 
     /*
@@ -261,12 +261,10 @@ int main()
      But you'll get a shell anyways.
    */
 
-    return 0;
+    exit(227);
 }
 
-int winner(char *ptr)
-{ 
-    system(ptr);
-    syscall(SYS_exit, 0);
-    return 0;
+void winner(char *ptr)
+{
+    exit(228);
 }

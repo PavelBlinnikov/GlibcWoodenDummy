@@ -76,7 +76,9 @@ int main(int argc , char* argv[])
 	printf("p4 = %s\n", (char *)p4);
 	printf("p3 = %s\n", (char *)p3);
 
-	assert(strstr((char *)p4, (char *)p3));
+	if (strstr((char *)p4, (char *)p3)) {
+		exit(228);
+  } else {
+    exit(227);
+  }
 }
-
-

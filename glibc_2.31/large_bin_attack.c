@@ -35,7 +35,7 @@ int main(){
   printf(">        malloc_printerr (\"malloc(): largebin double linked list corrupted (bk)\");\n\n");
   printf("This prevents the traditional large bin attack\n");
   printf("However, there is still one possible path to trigger large bin attack. The PoC is shown below : \n\n");
-  
+
   printf("====================================================================\n\n");
 
   size_t target = 0;
@@ -88,7 +88,9 @@ int main(){
   printf("\n");
   printf("====================================================================\n\n");
 
-  assert((size_t)(p2-2) == target);
-
-  return 0;
+  if ((size_t)(p2-2) == target) {
+    exit(228);
+  } else {
+    exit(227);
+  }
 }

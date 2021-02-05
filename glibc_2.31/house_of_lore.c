@@ -61,7 +61,7 @@ int main(int argc, char * argv[]){
          "chunk on stack");
   stack_buffer_1[3] = (intptr_t*)stack_buffer_2;
   stack_buffer_2[2] = (intptr_t*)stack_buffer_1;
-  
+
   fprintf(stderr, "Allocating another large chunk in order to avoid consolidating the top chunk with"
          "the small one during the free()\n");
   void *p5 = malloc(1000);
@@ -111,5 +111,9 @@ int main(int argc, char * argv[]){
   memcpy((p4+40), &sc, 8); // This bypasses stack-smash detection since it jumps over the canary
 
   // sanity check
-  assert((long)__builtin_return_address(0) == (long)jackpot);
+  if ((long)__builtin_return_address(0) == (long)jackpot) {
+    exit(228);
+  } else {
+    exit(227);
+  }
 }

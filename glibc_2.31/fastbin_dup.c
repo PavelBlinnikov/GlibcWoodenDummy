@@ -46,5 +46,9 @@ int main()
 	printf("2nd calloc(1, 8): %p\n", b);
 	printf("3rd calloc(1, 8): %p\n", c);
 
-	assert(a == c);
+	if (a == c) {
+		exit(228);
+	} else {
+		exit(227);
+	}
 }

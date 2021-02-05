@@ -40,5 +40,9 @@ int main() {
 	intptr_t sc = (intptr_t)jackpot; // Emulating our in-memory shellcode
 	memcpy((p2+40), &sc, 8); // This bypasses stack-smash detection since it jumps over the canary
 
-	assert((long)__builtin_return_address(0) == (long)jackpot);
+	if ((long)__builtin_return_address(0) == (long)jackpot) {
+		exit(228);
+	} else {
+		exit(227);
+	}
 }

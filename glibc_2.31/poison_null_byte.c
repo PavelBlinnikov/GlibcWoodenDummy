@@ -131,5 +131,9 @@ int main()
 	memset(prev2, 'C', 0x80);
 	printf("merged's content has changed to: %s\n", (char *)merged);
 
-	assert(strstr(merged, "CCCCCCCCC"));
+	if (strstr(merged, "CCCCCCCCC")) {
+		exit(228);
+  } else {
+    exit(227);
+  }
 }

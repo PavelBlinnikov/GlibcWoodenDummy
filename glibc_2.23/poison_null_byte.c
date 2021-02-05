@@ -59,7 +59,7 @@ int main()
 
 	// this technique works by overwriting the size metadata of a free chunk
 	free(b);
-	
+
 	printf("b.size: %#lx\n", *b_size_ptr);
 	printf("b.size is: (0x200 + 0x10) | prev_in_use\n");
 	printf("We overflow 'a' with a single null byte into the metadata of 'b'\n");
@@ -98,11 +98,11 @@ int main()
 
 	free(b1);
 	free(c);
-	
+
 	printf("Finally, we allocate 'd', overlapping 'b2'.\n");
 	d = malloc(0x300);
 	printf("d: %p\n",d);
-	
+
 	printf("Now 'd' and 'b2' overlap.\n");
 	memset(d,'D',0x300);
 
@@ -111,5 +111,9 @@ int main()
 	printf("Thanks to https://www.contextis.com/resources/white-papers/glibc-adventures-the-forgotten-chunks"
 		"for the clear explanation of this technique.\n");
 
-	assert(strstr(b2, "DDDDDDDDDDDD"));
+	if (strstr(b2, "DDDDDDDDDDDD")) {
+		exit(228);
+	} else {
+		exit(227);
+	}
 }

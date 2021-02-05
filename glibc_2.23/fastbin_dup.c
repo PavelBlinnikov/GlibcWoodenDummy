@@ -35,5 +35,9 @@ int main()
 	fprintf(stderr, "2nd malloc(8): %p\n", b);
 	fprintf(stderr, "3rd malloc(8): %p\n", c);
 
-	assert(a == c);
+	if (a == c) {
+ 		exit(228);
+ 	} else {
+ 		exit(227);
+ 	}
 }

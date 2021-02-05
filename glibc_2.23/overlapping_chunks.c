@@ -72,6 +72,10 @@ int main(int argc , char* argv[]){
 	memset(p3, '3', 80);
 	fprintf(stderr, "p4 = %s\n", (char *)p4);
 	fprintf(stderr, "p3 = %s\n", (char *)p3);
+
+	if (strstr((char *)p4, (char *)p3)) {
+		exit(228);
+	} else {
+		exit(227);
+	}
 }
-
-

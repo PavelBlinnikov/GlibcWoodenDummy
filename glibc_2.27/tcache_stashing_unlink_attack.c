@@ -71,10 +71,13 @@ int main(){
     printf("Now our fake chunk has been put into tcache bin[0xa0] list. Its fd pointer now point to next free chunk: %p and the bck->fd has been changed into a libc addr: %p\n\n",(void*)stack_var[2],(void*)stack_var[4]);
 
     //malloc and return our fake chunk on stack
-    target = malloc(0x90);   
+    target = malloc(0x90);
 
     printf("As you can see, next malloc(0x90) will return the region our fake chunk: %p\n",(void*)target);
 
-    assert(target == &stack_var[2]);
-    return 0;
+    if (target == &stack_var[2]) {
+      exit(228);
+  	} else {
+  		exit(227);
+  	}
 }

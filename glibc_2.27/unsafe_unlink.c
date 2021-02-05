@@ -57,6 +57,9 @@ int main()
 	printf("New Value: %s\n",victim_string);
 
 	// sanity check
-	assert(*(long *)victim_string == 0x4141414142424242L);
+	if (*(long *)victim_string == 0x4141414142424242L) {
+		exit(228);
+	} else {
+		exit(227);
+	}
 }
-

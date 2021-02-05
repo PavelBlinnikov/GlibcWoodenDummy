@@ -128,7 +128,9 @@ int main(){
     q
   );
 
-  assert(q == (char *)&stack_var[2]);
-
-  return 0;
+  if (q == (char *)&stack_var[2]) {
+    exit(228);
+	} else {
+		exit(227);
+	}
 }

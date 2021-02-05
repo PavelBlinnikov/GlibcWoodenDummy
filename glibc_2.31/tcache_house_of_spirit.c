@@ -40,5 +40,9 @@ int main()
 	void *b = malloc(0x30);
 	printf("malloc(0x30): %p\n", b);
 
-	assert((long)b == (long)&fake_chunks[2]);
+	if ((long)b == (long)&fake_chunks[2]) {
+		exit(228);
+  } else {
+    exit(227);
+  }
 }

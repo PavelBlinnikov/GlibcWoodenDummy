@@ -2,7 +2,7 @@
 
    This PoC works also with ASLR enabled.
    It will overwrite a GOT entry so in order to apply exactly this technique RELRO must be disabled.
-   If RELRO is enabled you can always try to return a chunk on the stack as proposed in Malloc Des Maleficarum 
+   If RELRO is enabled you can always try to return a chunk on the stack as proposed in Malloc Des Maleficarum
    ( http://phrack.org/issues/66/10.html )
 
    Tested in Ubuntu 14.04, 64bit, Ubuntu 18.04
@@ -81,7 +81,11 @@ int main(int argc , char* argv[])
 	strcpy(ctr_chunk, "YEAH!!!");
 	fprintf(stderr, "... new string: %s\n", bss_var);
 
-	assert(ctr_chunk == bss_var);
+	if (ctr_chunk == bss_var) {
+		exit(228);
+ 	} else {
+ 		exit(227);
+ 	}
 
 
 	// some further discussion:
