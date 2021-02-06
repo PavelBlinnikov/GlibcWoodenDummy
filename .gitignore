@@ -3,3 +3,4 @@ glibc_src
 glibc_versions
 .gdb_history
 *.o
+*.pyc
