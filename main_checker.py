@@ -14,7 +14,11 @@ def chmod(binary):
     os.system('chmod +x {}'.format(binary))
 
 def check(binary):
-    if os.system('LD_PRELOAD={} {} > /dev/null 2>&1'.format(libc, binary))>>8 == 228:
+    if not default:
+        result = os.system('LD_PRELOAD={} {} > /dev/null 2>&1'.format(libc, binary))>>8
+    else:
+        result = os.system('{} > /dev/null 2>&1'.format(binary))>>8
+    if result == 228:
         print('\x1b[1;32;40m[+] \x1b[0m{}'.format(binary))
         return True
     else:
@@ -26,7 +30,8 @@ def checker(array):
         if not os.path.exists(binary):
             print('\x1b[1;31;40m[-] \x1b[0m {} not found, try to execute: make all'.format(binary))
             exit(0)
-        patch('{}'.format(binary))
+        if not default:
+            patch('{}'.format(binary))
         if check('{}'.format(binary)):
             print('\t{}'.format(descriptions.descs[os.path.basename(binary)]))
 
@@ -45,20 +50,27 @@ parser.add_argument('--debug',
                        help='how much info to give, possible values: 1 or 2')
 args = parser.parse_args()
 if (not args.libc) or (not args.ld):
-    parser.print_help()
-    exit(1)
-libc = args.libc
-if not os.path.exists(libc):
-    print('\x1b[1;31;40m[-] \x1b[0m libc path is invalid')
-ld = args.ld
-if not os.path.exists(ld):
-    print('\x1b[1;31;40m[-] \x1b[0m ld path is invalid')
+    default = True
+    print('\x1b[1;33;40m[*]\x1b[0m Using your default libc')
+else:
+    libc = args.libc
+    if not os.path.exists(libc):
+        print('\x1b[1;31;40m[-] \x1b[0m libc path is invalid')
+    ld = args.ld
+    if not os.path.exists(ld):
+        print('\x1b[1;31;40m[-] \x1b[0m ld path is invalid')
 debug = args.debug
 if not debug:
     debug = 1
 else:
     debug = int(debug)
-chmod(ld)
+if not default:
+    default = False
+else:
+    default = True
+
+if not default:
+    chmod(ld)
 print('\x1b[1;33;40m[*]\x1b[0m 2.23')
 checker(v23)
 print('\n\x1b[1;33;40m[*]\x1b[0m 2.27')
