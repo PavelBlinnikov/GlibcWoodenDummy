@@ -53,6 +53,7 @@ if (not args.libc) or (not args.ld):
     default = True
     print('\x1b[1;33;40m[*]\x1b[0m Using your default libc')
 else:
+    default = False
     libc = args.libc
     if not os.path.exists(libc):
         print('\x1b[1;31;40m[-] \x1b[0m libc path is invalid')
